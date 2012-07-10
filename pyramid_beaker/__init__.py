@@ -15,6 +15,7 @@ def BeakerSessionFactoryConfig(**options):
     """ Return a Pyramid session factory using Beaker session settings
     supplied directly as ``**options``"""
 
+    @implementer(ISession)
     class PyramidBeakerSessionObject(SessionObject):
         _options = options
         _cookie_on_exception = _options.pop('cookie_on_exception', True)
@@ -90,7 +91,7 @@ def BeakerSessionFactoryConfig(**options):
                 token = self.new_csrf_token()
             return token
 
-    return implementer(ISession)(PyramidBeakerSessionObject)
+    return PyramidBeakerSessionObject
 
 
 def call_save(wrapped):
